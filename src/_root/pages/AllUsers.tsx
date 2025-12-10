@@ -103,7 +103,7 @@ const AllUsers = () => {
               <ul className="user-grid">
                 {otherUsers?.length > 0 ? (
                   otherUsers.map((creator) => (
-                    <li key={creator?.id} className="w-full">
+                    <li key={creator?.id} className="w-full list-none">
                       <UserCard user={creator} />
                     </li>
                   ))
