@@ -39,23 +39,23 @@ const AllUsers = () => {
   return (
     <div className="common-container">
       <div className="user-container">
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-4 md:gap-6 w-full">
           <h2 className="h3-bold md:h2-bold text-left w-full">All Users</h2>
           
           {/* Full Width Search Input */}
           <div className="w-full relative">
-            <div className="flex items-center gap-3 w-full h-12 bg-dark-4 rounded-lg px-4 transition-all duration-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-opacity-50">
+            <div className="flex items-center gap-2 md:gap-3 w-full h-11 md:h-12 bg-dark-4 rounded-lg px-3 md:px-4 transition-all duration-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-opacity-50">
               <img
                 src="/assets/icons/search.svg"
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 alt="search"
-                className="opacity-50"
+                className="opacity-50 md:w-5 md:h-5"
               />
               <Input
                 type="text"
-                placeholder="Search users by name or username..."
-                className="flex-1 h-full bg-transparent border-none outline-none text-white placeholder:text-light-4 text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+                placeholder="Search users..."
+                className="flex-1 h-full bg-transparent border-none outline-none text-white placeholder:text-light-4 text-sm md:text-base focus-visible:ring-0 focus-visible:ring-offset-0"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
               />
@@ -85,16 +85,16 @@ const AllUsers = () => {
             <>
               {/* Search Results Info */}
               {isSearchMode && (
-                <div className="mb-6 flex items-center gap-2 text-light-4 text-sm">
+                <div className="mb-4 md:mb-6 flex items-center gap-2 text-light-4 text-xs md:text-sm flex-wrap">
                   {isSearching ? (
                     <>
-                      <div className="animate-spin h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full"></div>
+                      <div className="animate-spin h-3 w-3 md:h-4 md:w-4 border-2 border-primary-500 border-t-transparent rounded-full"></div>
                       <span>Searching...</span>
                     </>
                   ) : (
                     <>
-                      <span>Found {otherUsers.length} user{otherUsers.length !== 1 ? 's' : ''} matching</span>
-                      <span className="text-light-1 font-semibold">"{debouncedSearch}"</span>
+                      <span>Found {otherUsers.length} user{otherUsers.length !== 1 ? 's' : ''}</span>
+                      <span className="text-light-1 font-semibold truncate max-w-[150px]">"{debouncedSearch}"</span>
                     </>
                   )}
                 </div>
@@ -108,11 +108,11 @@ const AllUsers = () => {
                     </li>
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="flex flex-col items-center justify-center py-12 md:py-20 text-center col-span-full">
                     <img
                       src="/assets/icons/people.svg"
-                      width={80}
-                      height={80}
+                      width={60}
+                      height={60}
                       alt="no users"
                       className="opacity-30 mb-4"
                     />

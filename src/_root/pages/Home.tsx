@@ -47,7 +47,7 @@ const Home = () => {
           {isPostLoading && !posts ? (
             <Loader />
           ) : (
-            <ul className="flex flex-col flex-1 gap-9 w-full ">
+            <ul className="flex flex-col flex-1 gap-5 md:gap-9 w-full">
               {posts && posts.length > 0 ? (
                 posts.map((post: any) => (
                   <li key={post.id} className="flex justify-center w-full">
@@ -55,35 +55,35 @@ const Home = () => {
                   </li>
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-dark-3 flex items-center justify-center mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-light-4">
+                <div className="flex flex-col items-center justify-center py-8 md:py-12 px-4 md:px-6 text-center">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-dark-3 flex items-center justify-center mb-3 md:mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-light-4 md:w-6 md:h-6">
                       <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 14C16.4183 14 20 17.5817 20 22H4C4 17.5817 7.58172 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <h3 className="text-light-2 text-lg font-semibold mb-2">Your feed is empty</h3>
-                  <p className="text-light-4 text-sm mb-4 max-w-sm">
-                    Follow other people to see their posts in your feed, or create your first post!
+                  <h3 className="text-light-2 text-base md:text-lg font-semibold mb-2">Your feed is empty</h3>
+                  <p className="text-light-4 text-xs md:text-sm mb-4 max-w-sm">
+                    Follow others to see their posts, or create your first post!
                   </p>
-                  <div className="flex gap-3">
+                  <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                     <a 
                       href="/explore" 
-                      className="text-primary-500 hover:text-primary-400 text-sm font-medium"
+                      className="text-primary-500 hover:text-primary-400 text-xs md:text-sm font-medium"
                     >
-                      Explore Posts
+                      Explore
                     </a>
                     <span className="text-light-4">•</span>
                     <a 
                       href="/all-users" 
-                      className="text-primary-500 hover:text-primary-400 text-sm font-medium"
+                      className="text-primary-500 hover:text-primary-400 text-xs md:text-sm font-medium"
                     >
                       Find People
                     </a>
                     <span className="text-light-4">•</span>
                     <a 
                       href="/create-post" 
-                      className="text-primary-500 hover:text-primary-400 text-sm font-medium"
+                      className="text-primary-500 hover:text-primary-400 text-xs md:text-sm font-medium"
                     >
                       Create Post
                     </a>

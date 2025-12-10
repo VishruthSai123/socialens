@@ -22,7 +22,7 @@ const GridPostList = ({
   return (
     <ul className="grid-container">
       {posts.map((post) => (
-        <li key={post.id || post.$id} className="relative min-w-80 h-80">
+        <li key={post.id || post.$id} className="relative min-w-0 aspect-square">
           <Link href={`/posts/${post.id || post.$id}`} className="grid-post_link">
             <img
               src={post.image_url || post.imageUrl}
@@ -33,16 +33,16 @@ const GridPostList = ({
 
           <div className="grid-post_user">
             {showUser && (
-              <div className="flex items-center justify-start gap-2 flex-1">
+              <div className="flex items-center justify-start gap-1 md:gap-2 flex-1 min-w-0">
                 <img
                   src={
                     post.creator?.image_url || post.creator?.imageUrl ||
                     "/assets/icons/profile-placeholder.svg"
                   }
                   alt="creator"
-                  className="w-8 h-8 rounded-full"
+                  className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
                 />
-                <p className="line-clamp-1">{post.creator?.name}</p>
+                <p className="line-clamp-1 text-xs md:text-sm">{post.creator?.name}</p>
               </div>
             )}
             {showStats && (

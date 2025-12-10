@@ -125,31 +125,31 @@ const ProfileWrapper = ({ params }: ProfileWrapperProps) => {
   }
 
   const ActionButtons = () => (
-    <div className="flex gap-2 w-full mt-3">
+    <div className="flex flex-wrap gap-2 w-full mt-3">
       {isOwnProfile ? (
         <>
           <Link
             href={`/update-profile/${currentUser.id}`}
-            className="h-10 bg-dark-4 px-4 text-light-1 flex-center gap-2 rounded-lg hover:bg-dark-3 flex-1"
+            className="h-9 md:h-10 bg-dark-4 px-3 md:px-4 text-light-1 flex-center gap-2 rounded-lg hover:bg-dark-3 flex-1 min-w-[80px]"
           >
-            <p className="flex whitespace-nowrap small-medium">Edit Profile</p>
+            <p className="flex whitespace-nowrap text-xs md:text-sm">Edit</p>
           </Link>
           <Button 
             type="button" 
-            className="h-10 bg-dark-4 px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1" 
+            className="h-9 md:h-10 bg-dark-4 px-3 md:px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1 min-w-[80px]" 
             onClick={() => setShowPrivacySettings(!showPrivacySettings)}
           >
-            <p className="flex whitespace-nowrap small-medium">Settings</p>
+            <p className="flex whitespace-nowrap text-xs md:text-sm">Settings</p>
           </Button>
-          <Button type="button" className="h-10 bg-dark-4 px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1" onClick={handleShareProfile}>
-            <p className="flex whitespace-nowrap small-medium">Share Profile</p>
+          <Button type="button" className="h-9 md:h-10 bg-dark-4 px-3 md:px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1 min-w-[80px]" onClick={handleShareProfile}>
+            <p className="flex whitespace-nowrap text-xs md:text-sm">Share</p>
           </Button>
         </>
       ) : (
         <>
           <Button
             type="button"
-            className={`h-10 px-4 text-light-1 flex-center gap-2 rounded-lg flex-1 ${
+            className={`h-9 md:h-10 px-3 md:px-4 text-light-1 flex-center gap-2 rounded-lg flex-1 min-w-[100px] ${
               isCurrentlyFollowing 
                 ? "bg-dark-4 hover:bg-dark-3" 
                 : "bg-primary-500 hover:bg-primary-600"
@@ -157,17 +157,17 @@ const ProfileWrapper = ({ params }: ProfileWrapperProps) => {
             onClick={handleFollowToggle}
             disabled={followMutation.isPending || unfollowMutation.isPending || isFollowingLoading}
           >
-            <p className="flex whitespace-nowrap small-medium">
+            <p className="flex whitespace-nowrap text-xs md:text-sm">
               {followMutation.isPending || unfollowMutation.isPending 
-                ? "Loading..." 
+                ? "..." 
                 : isCurrentlyFollowing 
                   ? "Following" 
                   : "Follow"
               }
             </p>
           </Button>
-          <Button type="button" className="h-10 bg-dark-4 px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1" onClick={handleShareProfile}>
-            <p className="flex whitespace-nowrap small-medium">Share Profile</p>
+          <Button type="button" className="h-9 md:h-10 bg-dark-4 px-3 md:px-4 text-light-1 rounded-lg hover:bg-dark-3 flex-1 min-w-[80px]" onClick={handleShareProfile}>
+            <p className="flex whitespace-nowrap text-xs md:text-sm">Share</p>
           </Button>
         </>
       )}
@@ -177,17 +177,17 @@ const ProfileWrapper = ({ params }: ProfileWrapperProps) => {
   return (
     <div className="profile-container pb-20 md:pb-8">
       <div className="flex flex-col w-full max-w-5xl">
-        <div className="flex flex-row items-center gap-4 sm:gap-6 w-full">
+        <div className="flex flex-row items-center gap-3 sm:gap-4 md:gap-6 w-full">
           <img
             src={currentUser.image_url || "/assets/icons/profile-placeholder.svg"}
             alt="profile"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex-shrink-0"
+            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex-shrink-0 object-cover"
           />
-          <div className="flex flex-col items-start w-full">
-            <h1 className="text-left text-xl sm:text-2xl font-bold">
+          <div className="flex flex-col items-start w-full min-w-0">
+            <h1 className="text-left text-lg sm:text-xl md:text-2xl font-bold truncate max-w-full">
               {currentUser.name}
             </h1>
-            <p className="text-sm text-light-3 text-left">
+            <p className="text-xs sm:text-sm text-light-3 text-left">
               @{currentUser.username}
             </p>
 

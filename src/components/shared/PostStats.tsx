@@ -147,10 +147,10 @@ const PostStats = ({ post, userId, onCommentClick, showComments = true }: PostSt
   return (
     <>
       <div
-        className={`flex justify-between items-center z-20 pt-4 ${containerStyles}`}>
-        <div className="flex gap-6">
+        className={`flex justify-between items-center z-20 pt-3 md:pt-4 ${containerStyles}`}>
+        <div className="flex gap-4 md:gap-6">
           {/* Like Button */}
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1.5 md:gap-2 items-center">
             <img
               src={`${
                 checkIsLiked(likes, userId)
@@ -158,39 +158,39 @@ const PostStats = ({ post, userId, onCommentClick, showComments = true }: PostSt
                   : "/assets/icons/like.svg"
               }`}
               alt="like"
-              width={22}
-              height={22}
+              width={20}
+              height={20}
               onClick={(e) => handleLikePost(e)}
-              className="cursor-pointer hover:scale-110 transition-transform"
+              className="cursor-pointer hover:scale-110 transition-transform md:w-[22px] md:h-[22px]"
             />
-            <p className="small-medium lg:base-medium">{likes.length}</p>
+            <p className="text-xs md:text-sm lg:text-base">{likes.length}</p>
           </div>
 
           {/* Comments Button */}
           {showComments && (
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-1.5 md:gap-2 items-center">
               <img
                 src="/assets/icons/chat.svg"
                 alt="comment"
-                width={22}
-                height={22}
-                className="cursor-pointer hover:scale-110 transition-transform"
+                width={20}
+                height={20}
+                className="cursor-pointer hover:scale-110 transition-transform md:w-[22px] md:h-[22px]"
                 onClick={onCommentClick}
               />
-              <p className="small-medium lg:base-medium">
+              <p className="text-xs md:text-sm lg:text-base">
                 {post._count?.comments || 0}
               </p>
             </div>
           )}
 
           {/* Share Button */}
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1.5 md:gap-2 items-center">
             <img
               src="/assets/icons/share.svg"
               alt="share"
-              width={22}
-              height={22}
-              className="cursor-pointer hover:scale-110 transition-transform"
+              width={20}
+              height={20}
+              className="cursor-pointer hover:scale-110 transition-transform md:w-[22px] md:h-[22px]"
               onClick={(e) => handleSharePost(e)}
             />
           </div>
@@ -200,9 +200,9 @@ const PostStats = ({ post, userId, onCommentClick, showComments = true }: PostSt
           <img
             src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
             alt="save"
-            width={22}
-            height={22}
-            className="cursor-pointer hover:scale-110 transition-transform"
+            width={20}
+            height={20}
+            className="cursor-pointer hover:scale-110 transition-transform md:w-[22px] md:h-[22px]"
             onClick={(e) => handleSavePost(e)}
           />
         </div>

@@ -36,7 +36,7 @@ const PostCard = ({ post }: PostCardProps) => {
   return (
     <div className="post-card">
       <div className="flex-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <Link href={`/profile/${post.creator.id}`}>
             <img
               src={
@@ -44,26 +44,30 @@ const PostCard = ({ post }: PostCardProps) => {
                 "/assets/icons/profile-placeholder.svg"
               }
               alt="creator"
-              className="w-12 lg:h-12 rounded-full"
+              className="w-10 h-10 md:w-12 md:h-12 lg:h-12 rounded-full flex-shrink-0"
             />
           </Link>
 
-          <div className="flex flex-col">
-            <p className="base-medium lg:body-bold text-light-1">
+          <div className="flex flex-col min-w-0">
+            <p className="base-medium lg:body-bold text-light-1 truncate">
               {post.creator.name}
             </p>
-            <div className="flex-center gap-2 text-light-3">
-              <p className="subtle-semibold lg:small-regular ">
+            <div className="flex items-center gap-1 md:gap-2 text-light-3 flex-wrap">
+              <p className="subtle-semibold lg:small-regular">
                 {multiFormatDateString(post.created_at)}
               </p>
-              •
-              <p className="subtle-semibold lg:small-regular">
-                {post.location}
-              </p>
+              {post.location && (
+                <>
+                  <span className="hidden xs:inline">•</span>
+                  <p className="subtle-semibold lg:small-regular hidden xs:block truncate max-w-[100px] md:max-w-none">
+                    {post.location}
+                  </p>
+                </>
+              )}
               {post.category && (
                 <>
-                  •
-                  <span className="subtle-semibold lg:small-regular text-light-3 capitalize">
+                  <span className="hidden sm:inline">•</span>
+                  <span className="subtle-semibold lg:small-regular text-light-3 capitalize hidden sm:block">
                     {POST_CATEGORIES.find(cat => cat.value === post.category)?.label || post.category}
                   </span>
                 </>
@@ -72,13 +76,14 @@ const PostCard = ({ post }: PostCardProps) => {
           </div>
         </div>
 
-        <div className={`flex gap-2 ${user?.id !== post.creator.id && "hidden"}`}>
+        <div className={`flex gap-1 md:gap-2 flex-shrink-0 ${user?.id !== post.creator.id && "hidden"}`}>
           <Link href={`/update-post/${post.id}`}>
             <img
               src={"/assets/icons/edit.svg"}
               alt="edit"
-              width={20}
-              height={20}
+              width={18}
+              height={18}
+              className="md:w-5 md:h-5"
             />
           </Link>
           
@@ -90,19 +95,20 @@ const PostCard = ({ post }: PostCardProps) => {
             <img
               src={"/assets/icons/delete.svg"}
               alt="delete"
-              width={20}
-              height={20}
+              width={18}
+              height={18}
+              className="md:w-5 md:h-5"
             />
           </Button>
         </div>
       </div>
 
       <Link href={`/posts/${post.id}`}>
-        <div className="small-medium lg:base-medium py-5">
-          <p className="whitespace-pre-wrap">{post.caption}</p>
+        <div className="small-medium lg:base-medium py-3 md:py-5">
+          <p className="whitespace-pre-wrap break-words">{post.caption}</p>
           <ul className="flex flex-wrap gap-1 mt-2">
             {(post.tags || []).map((tag: string, index: number) => (
-              <li key={`${tag}${index}`} className="text-light-3 small-regular hover:text-primary-500 transition-colors">
+              <li key={`${tag}${index}`} className="text-light-3 text-xs md:text-sm hover:text-primary-500 transition-colors">
                 #{tag}
               </li>
             ))}
