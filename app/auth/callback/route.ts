@@ -49,7 +49,26 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${origin}/update-password`);
       }
       
-      // Regular authentication/signup confirmation - redirect to home
+      // Check if this is a new user (first email confirmation)
+      // New users typically have email_confirmed_at close to now
+      const emailConfirmedAt = data.user.email_confirmed_at;
+      const createdAt = data.user.created_at;
+      
+      if (emailConfirmedAt && createdAt) {
+        const confirmedTime = new Date(emailConfirmedAt).getTime();
+        const createdTime = new Date(createdAt).getTime();
+        const timeDiff = confirmedTime - createdTime;
+        
+        // If email was confirmed within 24 hours of account creation, treat as new user
+        const isNewUser = timeDiff < 24 * 60 * 60 * 1000;
+        
+        if (isNewUser) {
+          console.log('New user detected, redirecting to onboarding (edit profile)');
+          return NextResponse.redirect(`${origin}/update-profile/${data.user.id}?onboarding=true`);
+        }
+      }
+      
+      // Regular authentication - redirect to home
       console.log('Redirecting to home page...');
       return NextResponse.redirect(`${origin}/`);
     } else {

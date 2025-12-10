@@ -25,9 +25,10 @@ import ProfileUploader from "@/components/shared/ProfileUploder";
 
 type UpdateProfileWrapperProps = {
   params: { id: string };
+  isOnboarding?: boolean;
 };
 
-const UpdateProfileWrapper = ({ params }: UpdateProfileWrapperProps) => {
+const UpdateProfileWrapper = ({ params, isOnboarding = false }: UpdateProfileWrapperProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const { id } = params;
@@ -117,6 +118,10 @@ const UpdateProfileWrapper = ({ params }: UpdateProfileWrapperProps) => {
     }
   };
 
+  const handleSkip = () => {
+    router.push('/');
+  };
+
   return (
     <div className="flex flex-1">
       <div className="common-container pb-32 md:pb-12">
@@ -128,7 +133,26 @@ const UpdateProfileWrapper = ({ params }: UpdateProfileWrapperProps) => {
             alt="edit"
             className="invert-white"
           />
-          <h2 className="h3-bold md:h2-bold text-left w-full">Edit Profile</h2>
+          <div className="flex-1">
+            <h2 className="h3-bold md:h2-bold text-left w-full">
+              {isOnboarding ? "Complete Your Profile" : "Edit Profile"}
+            </h2>
+            {isOnboarding && (
+              <p className="text-light-3 text-sm mt-1">
+                Add a photo and bio to help others find you
+              </p>
+            )}
+          </div>
+          {isOnboarding && (
+            <Button
+              type="button"
+              onClick={handleSkip}
+              variant="ghost"
+              className="text-light-3 hover:text-light-1"
+            >
+              Skip for now →
+            </Button>
+          )}
         </div>
 
         <Form {...form}>
@@ -222,21 +246,43 @@ const UpdateProfileWrapper = ({ params }: UpdateProfileWrapperProps) => {
             />
 
             <div className="flex gap-4 items-center justify-end pt-6 pb-4">
-              <Button
-                type="button"
-                className="shad-button_dark_4"
-                onClick={() => router.back()}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="shad-button_primary whitespace-nowrap"
-                disabled={isLoadingUpdate}
-              >
-                {isLoadingUpdate && <Loader />}
-                Update Profile
-              </Button>
+              {isOnboarding ? (
+                <>
+                  <Button
+                    type="button"
+                    className="shad-button_dark_4"
+                    onClick={handleSkip}
+                  >
+                    Skip for now
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="shad-button_primary whitespace-nowrap"
+                    disabled={isLoadingUpdate}
+                  >
+                    {isLoadingUpdate && <Loader />}
+                    Save & Continue
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    type="button"
+                    className="shad-button_dark_4"
+                    onClick={() => router.back()}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="shad-button_primary whitespace-nowrap"
+                    disabled={isLoadingUpdate}
+                  >
+                    {isLoadingUpdate && <Loader />}
+                    Update Profile
+                  </Button>
+                </>
+              )}
             </div>
           </form>
         </Form>
