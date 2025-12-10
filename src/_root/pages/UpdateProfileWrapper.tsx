@@ -21,7 +21,7 @@ import { ProfileValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/SupabaseAuthContext";
 import { useGetUserById, useUpdateUser, useGetCurrentUser } from "@/lib/react-query/queriesAndMutations";
 import Loader from "@/components/shared/Loader";
-import ProfileUploader from "@/components/shared/ProfileUploder";
+import ProfileUploader from "@/components/shared/ProfileUploader";
 
 type UpdateProfileWrapperProps = {
   params: { id: string };
@@ -134,30 +134,33 @@ const UpdateProfileWrapper = ({ params, isOnboarding = false }: UpdateProfileWra
   return (
     <div className="flex flex-1">
       <div className="common-container pb-32 md:pb-12">
-        <div className="flex-start gap-3 justify-start w-full max-w-5xl">
-          <img
-            src="/assets/icons/edit.svg"
-            width={36}
-            height={36}
-            alt="edit"
-            className="invert-white"
-          />
-          <div className="flex-1">
-            <h2 className="h3-bold md:h2-bold text-left w-full">
-              {isOnboarding ? "Complete Your Profile" : "Edit Profile"}
-            </h2>
-            {isOnboarding && (
-              <p className="text-light-3 text-sm mt-1">
-                Add a photo and bio to help others find you
-              </p>
-            )}
+        {/* Header Section - Responsive */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full max-w-5xl">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <img
+              src="/assets/icons/edit.svg"
+              width={28}
+              height={28}
+              alt="edit"
+              className="invert-white flex-shrink-0 sm:w-9 sm:h-9"
+            />
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-left truncate">
+                {isOnboarding ? "Complete Your Profile" : "Edit Profile"}
+              </h2>
+              {isOnboarding && (
+                <p className="text-light-3 text-xs sm:text-sm mt-0.5 sm:mt-1">
+                  Add a photo and bio to help others find you
+                </p>
+              )}
+            </div>
           </div>
           {isOnboarding && (
             <Button
               type="button"
               onClick={handleSkip}
               variant="ghost"
-              className="text-light-3 hover:text-light-1"
+              className="text-light-3 hover:text-light-1 text-sm self-start sm:self-center mt-1 sm:mt-0 -ml-1 sm:ml-0"
             >
               Skip for now →
             </Button>

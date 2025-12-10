@@ -23,7 +23,7 @@ import { ProfileValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/SupabaseAuthContext";
 import { useGetUserById, useUpdateUser, useGetCurrentUser } from "@/lib/react-query/queriesAndMutations";
 import Loader from "@/components/shared/Loader";
-import ProfileUploader from "@/components/shared/ProfileUploder";
+import ProfileUploader from "@/components/shared/ProfileUploader";
 
 const UpdateProfile = () => {
   const { toast } = useToast();

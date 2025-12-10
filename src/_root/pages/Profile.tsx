@@ -178,11 +178,14 @@ const ProfileWrapper = ({ params }: ProfileWrapperProps) => {
     <div className="profile-container pb-20 md:pb-8">
       <div className="flex flex-col w-full max-w-5xl">
         <div className="flex flex-row items-center gap-3 sm:gap-4 md:gap-6 w-full">
-          <img
-            src={currentUser.image_url || "/assets/icons/profile-placeholder.svg"}
-            alt="profile"
-            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex-shrink-0 object-cover"
-          />
+          <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex-shrink-0 overflow-hidden bg-dark-4">
+            <img
+              src={currentUser.image_url || "/assets/icons/profile-placeholder.svg"}
+              alt="profile"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: "center center" }}
+            />
+          </div>
           <div className="flex flex-col items-start w-full min-w-0">
             <h1 className="text-left text-lg sm:text-xl md:text-2xl font-bold truncate max-w-full">
               {currentUser.name}
