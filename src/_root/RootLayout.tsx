@@ -1,14 +1,33 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useUserContext } from "@/context/SupabaseAuthContext";
 import Topbar from "@/components/shared/Topbar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import Bottombar from "@/components/shared/Bottombar";
 
+// Hook to detect if we're on desktop
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    
+    checkIsDesktop();
+    
+    window.addEventListener('resize', checkIsDesktop);
+    return () => window.removeEventListener('resize', checkIsDesktop);
+  }, []);
+
+  return isDesktop;
+}
+
 const RootLayout = () => {
   const { isAuthenticated, isLoading } = useUserContext();
+  const isDesktop = useIsDesktop();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -21,7 +40,7 @@ const RootLayout = () => {
   return (
     <div className="w-full md:flex">
       <Topbar />
-      <LeftSidebar />
+      {isDesktop && <LeftSidebar />}
 
       <section className="flex flex-1 h-full">
         <Outlet />

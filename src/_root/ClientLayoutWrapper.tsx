@@ -8,6 +8,24 @@ import Topbar from '../components/shared/Topbar';
 import LeftSidebar from '../components/shared/LeftSidebar';
 import Bottombar from '../components/shared/Bottombar';
 
+// Hook to detect if we're on desktop
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    
+    checkIsDesktop();
+    
+    window.addEventListener('resize', checkIsDesktop);
+    return () => window.removeEventListener('resize', checkIsDesktop);
+  }, []);
+
+  return isDesktop;
+}
+
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
 }
@@ -15,6 +33,7 @@ interface ClientLayoutWrapperProps {
 const ClientLayoutWrapper = ({ children }: ClientLayoutWrapperProps) => {
   const [isClient, setIsClient] = useState(false);
   const { isAuthenticated, isLoading } = useUserContext();
+  const isDesktop = useIsDesktop();
   
   // Track user activity when authenticated
   useUserActivity();
@@ -35,7 +54,7 @@ const ClientLayoutWrapper = ({ children }: ClientLayoutWrapperProps) => {
   return (
     <BrowserRouter>
       <div className="w-full md:flex">
-        <LeftSidebar />
+        {isDesktop && <LeftSidebar />}
         <section className="flex flex-1 h-full">
           {children}
         </section>

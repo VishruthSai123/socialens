@@ -32,8 +32,8 @@ const PostFormNextJS = ({ post, action }: PostFormNextJSProps) => {
       caption: post ? post?.caption : "",
       file: [],
       location: post ? post.location : "",
-      tags: post ? post.tags.join(",") : "",
-      category: post ? post.category : "general",
+      tags: post ? (post.tags ? post.tags.join(",") : "") : "",
+      category: post ? (post.category || "general") : "general",
     },
   });
 
