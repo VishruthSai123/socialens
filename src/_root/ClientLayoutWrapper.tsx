@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useUserContext } from '../context/SupabaseAuthContext';
 import { useUserActivity } from '../hooks/useUserActivity';
@@ -27,6 +27,46 @@ function useIsDesktop() {
   return isDesktop;
 }
 
+// Check if user needs onboarding (new user with incomplete profile)
+function useOnboardingCheck() {
+  const { user, isAuthenticated } = useUserContext();
+  const hasChecked = useRef(false);
+
+  useEffect(() => {
+    // Only check once per session and when authenticated
+    if (!isAuthenticated || !user || hasChecked.current) return;
+    
+    // Check if we're already on the update-profile page (avoid redirect loop)
+    if (window.location.pathname.includes('/update-profile')) {
+      hasChecked.current = true;
+      return;
+    }
+
+    // Check if onboarding was already completed or skipped
+    const onboardingKey = `shadow_onboarding_${user.id}`;
+    const onboardingStatus = localStorage.getItem(onboardingKey);
+    
+    if (onboardingStatus === 'completed' || onboardingStatus === 'skipped') {
+      hasChecked.current = true;
+      return;
+    }
+
+    // Check if profile is incomplete (no bio AND no image)
+    const hasIncompletProfile = !user.bio && !user.image_url;
+    
+    if (hasIncompletProfile) {
+      // Mark as checked so we don't keep redirecting
+      hasChecked.current = true;
+      // Redirect to onboarding
+      window.location.href = `/update-profile/${user.id}?onboarding=true`;
+    } else {
+      // Profile is complete, mark onboarding as done
+      localStorage.setItem(onboardingKey, 'completed');
+      hasChecked.current = true;
+    }
+  }, [isAuthenticated, user]);
+}
+
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
 }
@@ -38,6 +78,9 @@ const ClientLayoutWrapper = ({ children }: ClientLayoutWrapperProps) => {
   
   // Track user activity when authenticated
   useUserActivity();
+  
+  // Check if new user needs onboarding
+  useOnboardingCheck();
 
   useEffect(() => {
     setIsClient(true);

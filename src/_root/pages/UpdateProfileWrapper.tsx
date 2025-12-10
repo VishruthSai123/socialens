@@ -105,11 +105,16 @@ const UpdateProfileWrapper = ({ params, isOnboarding = false }: UpdateProfileWra
 
       await refetchCurrentUser();
       
+      // Mark onboarding as completed
+      if (isOnboarding && currentUser?.id) {
+        localStorage.setItem(`shadow_onboarding_${currentUser.id}`, 'completed');
+      }
+      
       toast({
-        title: "Profile updated successfully!",
+        title: isOnboarding ? "Welcome to Shadow!" : "Profile updated successfully!",
       });
       
-      router.push(`/profile/${id}`);
+      router.push(isOnboarding ? '/' : `/profile/${id}`);
     } catch (error) {
       console.log({ error });
       toast({
@@ -119,6 +124,10 @@ const UpdateProfileWrapper = ({ params, isOnboarding = false }: UpdateProfileWra
   };
 
   const handleSkip = () => {
+    // Mark onboarding as skipped so we don't redirect back
+    if (isOnboarding && currentUser?.id) {
+      localStorage.setItem(`shadow_onboarding_${currentUser.id}`, 'skipped');
+    }
     router.push('/');
   };
 

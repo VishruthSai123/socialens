@@ -134,14 +134,27 @@ const SignupForm = () => {
         return;
       }
 
-      // Show success message
-      toast({ 
-        title: "Account created successfully!", 
-        description: "Please sign in with your new account."
-      });
+      // With email confirmation disabled, user is already logged in after signup
+      // Get the user ID and redirect to onboarding
+      const userId = newUser.user?.id;
+      
+      if (userId) {
+        // Show success message
+        toast({ 
+          title: "Welcome to Shadow!", 
+          description: "Let's set up your profile."
+        });
 
-      // Redirect to sign-in page
-      router.push('/sign-in');
+        // Redirect to edit profile page for onboarding
+        router.push(`/update-profile/${userId}?onboarding=true`);
+      } else {
+        // Fallback: If no user ID, redirect to sign-in
+        toast({ 
+          title: "Account created successfully!", 
+          description: "Please sign in with your new account."
+        });
+        router.push('/sign-in');
+      }
       
     } catch (error: any) {
       console.error('Signup error details:', error);
