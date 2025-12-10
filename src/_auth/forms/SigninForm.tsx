@@ -19,7 +19,7 @@ import { useUserContext } from "@/context/SupabaseAuthContext";
 
 const SigninForm = () => {
   const router = useRouter();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { isLoading: isUserLoading } = useUserContext();
   const { toast } = useToast();
 
   // State for inline error display
@@ -48,16 +48,11 @@ const SigninForm = () => {
         return;
       }
 
-      const isLoggedIn = await checkAuthUser();
-
-      if (isLoggedIn) {
-        form.reset();
-        setSignInError(null);
-        router.push("/");
-      } else {
-        setSignInError("Authentication check failed. Please try again.");
-        return;
-      }
+      // Directly redirect - the auth state will update automatically
+      // via the onAuthStateChange listener
+      form.reset();
+      router.push("/");
+      
     } catch (error: any) {
       console.error('Login error:', error);
       

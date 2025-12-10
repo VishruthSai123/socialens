@@ -196,57 +196,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (event === 'SIGNED_IN') {
           if (session?.user) {
             setSupabaseUser(session.user)
-            // Check if we actually have valid state (not just refs)
-            const hasValidState = user?.id && isAuthenticated
-            const hasExistingUser = userRef.current?.id && isAuthenticatedRef.current
+            setIsAuthenticated(true)
+            setIsLoading(false)
             
-            // Only skip loading if we have BOTH valid refs AND valid state
-            if (hasValidState && hasExistingUser) {
-              // Just silently refresh user data without loading state
-              try {
-                const currentAccount = await getCurrentUser()
-                if (currentAccount) {
-                  setUser(currentAccount)
-                  setIsAuthenticated(true)
-                  if (typeof window !== 'undefined') {
-                    localStorage.setItem('shadow_user', JSON.stringify(currentAccount))
-                    localStorage.setItem('shadow_auth', 'true')
-                  }
+            // Fetch user data in background without blocking UI
+            getCurrentUser().then(currentAccount => {
+              if (currentAccount && mounted) {
+                setUser(currentAccount)
+                if (typeof window !== 'undefined') {
+                  localStorage.setItem('shadow_user', JSON.stringify(currentAccount))
+                  localStorage.setItem('shadow_auth', 'true')
                 }
-              } catch (error) {
-                console.error('Silent auth refresh error:', error)
               }
-            } else {
-              // Check if we have cached user data first
-              const cachedUser = typeof window !== 'undefined' ? localStorage.getItem('shadow_user') : null
-              const cachedAuth = typeof window !== 'undefined' ? localStorage.getItem('shadow_auth') : null
-              
-              if (cachedUser && cachedAuth === 'true') {
-                try {
-                  const userData = JSON.parse(cachedUser)
-                  setUser(userData)
-                  setIsAuthenticated(true)
-                  setIsLoading(false) // Important: Don't trigger loading state
-                } catch (error) {
-                  console.error('Error parsing cached user:', error)
-                  localStorage.removeItem('shadow_user')
-                  localStorage.removeItem('shadow_auth')
-                  console.log('Cached data corrupted, fetching fresh user data')
-                  await checkAuthUser()
-                }
-              } else {
-                console.log('No cached data, fetching fresh user data')
-                await checkAuthUser()
-              }
-            }
+            }).catch(error => {
+              console.error('Background user fetch error:', error)
+            })
           }
         } else if (event === 'TOKEN_REFRESHED') {
           if (session?.user) {
             setSupabaseUser(session.user)
-            // Token refresh should never show loading
-            try {
-              const currentAccount = await getCurrentUser()
-              if (currentAccount) {
+            // Token refresh should never show loading - fetch in background
+            getCurrentUser().then(currentAccount => {
+              if (currentAccount && mounted) {
                 setUser(currentAccount)
                 setIsAuthenticated(true)
                 if (typeof window !== 'undefined') {
@@ -254,9 +225,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   localStorage.setItem('shadow_auth', 'true')
                 }
               }
-            } catch (error) {
+            }).catch(error => {
               console.error('Token refresh error:', error)
-            }
+            })
           }
         } else if (event === 'SIGNED_OUT') {
           setSupabaseUser(null)

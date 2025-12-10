@@ -51,36 +51,31 @@ export default function UpdatePassword() {
         if (session && !error) {
           console.log('User authenticated, can update password');
           setIsAuthenticated(true);
+          setIsLoading(false);
         } else {
-          console.log('User not authenticated');
-          toast({
-            title: "Authentication required",
-            description: "Please click the link from your email to access this page.",
-            variant: "destructive",
-          });
-          router.push('/forgot-password');
+          console.log('No session found, waiting for auth callback...');
+          // Don't redirect immediately - wait for auth state change
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Auth check error:', error);
-        router.push('/forgot-password');
-      } finally {
         setIsLoading(false);
       }
     };
 
     checkAuth();
 
-    // Listen for auth changes
+    // Listen for auth changes - this handles the magic link callback
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth state changed:', event);
-      if (event === 'SIGNED_IN' && session) {
+      if ((event === 'SIGNED_IN' || event === 'PASSWORD_RECOVERY') && session) {
         setIsAuthenticated(true);
         setIsLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth, toast, router]);
+  }, [supabase.auth]);
 
   const updatePasswordMutation = useMutation({
     mutationFn: async (password: string) => {
